@@ -1,60 +1,58 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import API from "../api";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const theme = localStorage.getItem("theme") === "dark";
-    setDarkMode(theme);
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const res = await axios.post(`${API}/api/auth/login`, {
+        email,
+        password
+      });
+
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+
       navigate("/dashboard");
     } catch (err) {
-      console.log(err);
-      alert("Login Failed!");
+      alert("Login Failed");
     }
   };
 
   return (
-    <div className={`d-flex justify-content-center align-items-center vh-100 ${darkMode ? 'bg-dark' : 'bg-light'}`}>
-      <div className={`p-5 rounded shadow ${darkMode ? 'bg-secondary text-white' : 'bg-white text-dark'}`} style={{ minWidth: "350px" }}>
-        <h2 className="mb-3 text-center">Welcome Back!</h2>
-        <p className="text-center text-muted mb-4">Login to your Smart Task Manager account</p>
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="p-4 bg-white shadow rounded" style={{ width: "300px" }}>
+        <h3 className="text-center mb-3">Login</h3>
 
         <form onSubmit={handleLogin}>
           <input
+            className="form-control mb-2"
             type="email"
-            className={`form-control mb-3 ${darkMode ? 'bg-dark text-white' : ''}`}
             placeholder="Email"
-            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
+            className="form-control mb-2"
             type="password"
-            className={`form-control mb-3 ${darkMode ? 'bg-dark text-white' : ''}`}
             placeholder="Password"
-            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
+
+          <button className="btn btn-primary w-100">Login</button>
         </form>
 
-        <p className="text-center mt-3">
-          Don't have an account?{" "}
-          <span className="text-primary" style={{ cursor: "pointer" }} onClick={() => navigate("/signup")}>
+        <p className="text-center mt-2">
+          No account?{" "}
+          <span style={{ color: "blue", cursor: "pointer" }} onClick={() => navigate("/signup")}>
             Signup
           </span>
         </p>

@@ -1,112 +1,95 @@
-# Smart Task Manager
+# 🚀 Smart Task Manager (MERN)
 
-Smart Task Manager is a full-stack web application designed to help users efficiently manage their daily tasks. It allows task creation, editing, deletion, completion tracking, and provides visual analytics for productivity.
-
----
-
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-3. [Task Types](#task-types)
-4. [Technologies Used](#technologies-used)
-5. [Frontend](#frontend)
-6. [Backend](#backend)
-7. [Project Flow](#project-flow)
-8. [Screenshots](#screenshots)
-9. [Installation](#installation)
-10. [Deployment](#deployment)
-11. [License](#license)
+A full-stack Task Management System built using the MERN stack (MongoDB, Express.js, React.js, Node.js).  
+This application allows users to manage personal and assigned tasks with secure authentication and role-based access control.
 
 ---
 
-## Project Overview
-Smart Task Manager helps users organize their tasks with priority, points, due dates, and tags. It includes:
-- Task management (CRUD operations)
-- Productivity analytics using charts
-- Voice-based task input
-- Dark/Light mode toggle
-- Search and filter tasks
+## 📌 Features
+
+### 🔐 Authentication
+- User Registration & Login
+- Password hashing using bcrypt
+- JWT-based authentication
+- Protected routes
 
 ---
 
-## Features
-- **Task Management:** Add, edit, delete, and complete tasks  
-- **Priority Levels:** Low, Medium, High  
-- **Points System:** Assign points to tasks  
-- **Due Dates:** Track deadlines  
-- **Productivity Analytics:** Visual charts showing Completed vs Pending vs High Priority tasks  
-- **Search & Filter:** Quickly find tasks  
-- **Dark/Light Mode:** Switch interface theme  
-- **Voice Input:** Add tasks using natural language commands
+### ✅ Task Management
+- Create tasks
+- View tasks
+- Update tasks
+- Delete tasks
 
 ---
 
-## Task Types
-- **Low Priority:** Tasks with low urgency  
-- **Medium Priority:** Tasks with moderate urgency  
-- **High Priority:** Critical tasks  
-- **Completed:** Tasks marked as finished  
-- **Pending:** Tasks still in progress
+### 📋 Task Fields
+- Title
+- Description
+- Status (Todo / In Progress / Done)
+- Due Date
 
 ---
 
-## Technologies Used
+### 👥 Task Types
 
-### Frontend
-- React.js with Hooks  
-- React Router DOM (routing)  
-- Axios (API requests)  
-- Bootstrap (UI styling)  
-- Chart.js (productivity analytics)  
+#### 1. Personal Tasks
+- Created by user
+- Visible only to creator
+- Fully editable
 
-### Backend
-- Node.js + Express.js (server)  
-- MongoDB with Mongoose (database)  
-- JWT (authentication)  
-- RESTful API endpoints  
+#### 2. Assigned Tasks
+- Assign tasks to other users
+- Visible to both assigner & assignee
 
 ---
 
-## Frontend
-- **Login Page:** User authentication  
-- **Signup Page:** User registration  
-- **Dashboard:** Add, edit, delete, complete tasks; view productivity analytics  
-- **Charts:** Visual representation of tasks by status using Chart.js  
-- **Dark/Light Mode:** LocalStorage-based theme toggle  
-- **Voice Task Input:** Add task using microphone  
+### 🔒 Role-Based Permissions
+
+#### Assignee:
+- Can update only **task status**
+- Cannot edit title, description, or due date
+
+#### Assigner:
+- Can update **due date**
+- Can view progress
+- Cannot update task status
 
 ---
 
-## Backend
-- **Auth Routes:** `/api/auth/login`, `/api/auth/signup`  
-- **Task Routes:** `/api/tasks` for CRUD operations  
-- **MongoDB Collections:** `users`, `tasks`  
-- **JWT Authentication:** Secure user data and task operations  
+### 🛡 Security
+- Users cannot access tasks they are not related to
+- API-level authorization checks implemented
 
 ---
 
-## Project Flow
-1. User Signup / Login  
-2. Redirect to Dashboard  
-3. Add tasks with title, description, priority, points, due date, and tags  
-4. Mark tasks as completed or edit/delete tasks  
-5. Dashboard updates productivity chart automatically  
-6. Use search/filter to find tasks  
-7. Optional: Add tasks via voice input  
-8. Toggle Dark/Light mode  
+## 🌟 Extra Features (Added Beyond Requirements)
+
+👉 These features were implemented to enhance usability and user experience:
+
+- 🎤 Voice-based task creation (Speech Recognition)
+- 📊 Task analytics with Pie Chart (status-based visualization)
+- 🔍 Search & filter tasks (by status & keyword)
+- 🌙 Dark mode toggle for better UI experience
+- 🏷 Task tags & points system
+- ⚠ Deadline alerts (Due Today / Overdue)
+- 📱 Clean and responsive UI
 
 ---
 
+## 🖥 Tech Stack
 
+### Frontend:
+- React.js
+- Bootstrap
+- Chart.js
 
-**Chart Visualization:**  
-- Orange → Pending  
-- Green → Completed  
-- Red → High Priority  
+### Backend:
+- Node.js
+- Express.js
 
----
+### Database:
+- MongoDB
 
-## Installation
-1. Clone repository:
-```bash
-git clone <your-repo-link>
+### Authentication:
+- JWT (JSON Web Token)

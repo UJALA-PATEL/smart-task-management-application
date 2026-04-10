@@ -6,27 +6,38 @@ Chart.register(ArcElement, Tooltip, Legend);
 
 function TaskChart({ tasks }) {
 
-  const completed = tasks.filter(t => t.completed).length;
-  const pending = tasks.filter(t => !t.completed).length;
-  const high = tasks.filter(t => t.priority === "High").length;
+  if (!tasks || tasks.length === 0) {
+    return null;
+  }
+
+  const todo = tasks.filter(t => t.status === "Todo").length;
+  const inProgress = tasks.filter(t => t.status === "In Progress").length;
+  const done = tasks.filter(t => t.status === "Done").length;
 
   const data = {
-    labels: ["Completed", "Pending", "High Priority"],
+    labels: ["Todo", "In Progress", "Done"],
     datasets: [
       {
-        data: [completed, pending, high],
-        backgroundColor: ["green", "orange", "red"]
+        data: [todo, inProgress, done],
+        backgroundColor: ["#6c757d", "#ffc107", "#198754"]
       }
     ]
   };
 
+  const options = {
+    plugins: {
+      legend: {
+        position: "bottom"
+      }
+    }
+  };
+
   return (
-    <div className="card p-3 mb-4">
-
-      <h4>Productivity Analytics</h4>
-
-      <Pie data={data} />
-
+    <div className="d-flex justify-content-center mb-4">
+      <div className="card p-3 text-center" style={{ width: "300px" }}>
+        <h6 className="mb-3">📊 Task Status</h6>
+        <Pie data={data} options={options} />
+      </div>
     </div>
   );
 }

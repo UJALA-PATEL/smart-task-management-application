@@ -27,11 +27,10 @@ function TaskFilter({ filter, setFilter, search, setSearch }) {
             onChange={(e) => setFilter(e.target.value)}
           >
 
-            <option value="all">All Tasks</option>
-            <option value="completed">Completed</option>
-            <option value="pending">Pending</option>
-            <option value="high">High Priority</option>
-
+           <option value="all">All</option>
+           <option value="todo">Todo</option>
+           <option value="progress">In Progress</option>
+           <option value="done">Done</option>
           </select>
 
         </div>

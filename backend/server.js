@@ -7,20 +7,19 @@ const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
 
-// MongoDB connection
+// ✅ DIRECT MONGODB CONNECTION (NO ENV)
 mongoose.connect("mongodb://127.0.0.1:27017/taskmanager")
   .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.log("❌ MongoDB error:", err));
+  .catch((err) => console.log("❌ Mongo Error:", err));
 
-// Server start
-app.listen(5000, () => {
-  console.log("🚀 Server running on port 5000");
+const PORT = 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });

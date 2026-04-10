@@ -1,25 +1,21 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+  const token = localStorage.getItem("token");
+
   return (
     <Router>
       <Routes>
 
-        {/* Home redirect */}
         <Route
           path="/"
-          element={
-            localStorage.getItem("token") ? (
-              <Navigate to="/dashboard" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
+          element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
         />
 
         <Route path="/login" element={<Login />} />
@@ -33,9 +29,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* Catch all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
     </Router>

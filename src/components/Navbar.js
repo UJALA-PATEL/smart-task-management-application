@@ -6,6 +6,8 @@ function Navbar() {
     localStorage.getItem("darkMode") === "true"
   );
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add("dark");
@@ -16,9 +18,9 @@ function Navbar() {
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
-  // 🔥 LOGOUT FUNCTION
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.href = "/login";
   };
 
@@ -29,7 +31,12 @@ function Navbar() {
         Smart Task Manager
       </span>
 
-      <div>
+      <div className="d-flex align-items-center">
+
+        <span className="text-white me-3">
+          👤 {user?.email}
+        </span>
+
         <button
           className="btn btn-light me-2"
           onClick={() => setDarkMode(!darkMode)}
