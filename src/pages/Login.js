@@ -10,31 +10,44 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const res = await axios.post(`${API}/api/auth/login`, {
-        email,
-        password
+        email: email,
+        password: password
       });
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      console.log("LOGIN RESPONSE:", res.data);
 
-      navigate("/dashboard");
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        alert("Login Successful!");
+        navigate("/dashboard");
+      } else {
+        alert("Login failed: No token received");
+      }
+
     } catch (err) {
-      alert("Login Failed");
+      console.log("ERROR:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Login Failed");
     }
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="p-4 bg-white shadow rounded" style={{ width: "300px" }}>
+        
         <h3 className="text-center mb-3">Login</h3>
 
         <form onSubmit={handleLogin}>
+          
           <input
             className="form-control mb-2"
             type="email"
             placeholder="Email"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -43,19 +56,27 @@ function Login() {
             className="form-control mb-2"
             type="password"
             placeholder="Password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
 
-          <button className="btn btn-primary w-100">Login</button>
+          <button className="btn btn-primary w-100">
+            Login
+          </button>
+
         </form>
 
         <p className="text-center mt-2">
           No account?{" "}
-          <span style={{ color: "blue", cursor: "pointer" }} onClick={() => navigate("/signup")}>
+          <span
+            style={{ color: "blue", cursor: "pointer" }}
+            onClick={() => navigate("/signup")}
+          >
             Signup
           </span>
         </p>
+
       </div>
     </div>
   );

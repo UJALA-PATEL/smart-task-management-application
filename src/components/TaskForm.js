@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
 function TaskForm({ addTask }) {
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [assignedEmail, setAssignedEmail] = useState("");
+  const [priority, setPriority] = useState("Low");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,13 +15,15 @@ function TaskForm({ addTask }) {
       title,
       description,
       dueDate,
-      assignedEmail
+      assignedEmail,
+      priority
     });
 
     setTitle("");
     setDescription("");
     setDueDate("");
     setAssignedEmail("");
+    setPriority("Low");
 
     alert("✅ Task Created!");
   };
@@ -59,6 +63,17 @@ function TaskForm({ addTask }) {
           onChange={(e) => setAssignedEmail(e.target.value)}
         />
 
+        {/* 🔥 NEW */}
+        <select
+          className="form-control mb-2"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+        >
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+        </select>
+
         <button className="btn btn-primary w-100">
           Add Task
         </button>
@@ -69,3 +84,7 @@ function TaskForm({ addTask }) {
 }
 
 export default TaskForm;
+
+
+
+

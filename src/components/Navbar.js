@@ -1,57 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-function Navbar() {
-
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("darkMode") === "true"
-  );
+function Navbar({ darkMode, setDarkMode }) {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-
-    localStorage.setItem("darkMode", darkMode);
-  }, [darkMode]);
-
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.clear();
     window.location.href = "/login";
   };
 
   return (
-    <nav className="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
-
-      <span className="navbar-brand">
-        Smart Task Manager
+    <nav
+      className="px-3 d-flex justify-content-end align-items-center"
+      style={{
+        height: "70px",
+        background: darkMode ? "#0f172a" : "#021333"
+      }}
+    >
+      <span className="text-white me-3">
+        👤 {user?.email}
       </span>
 
-      <div className="d-flex align-items-center">
+      <button
+        className="btn btn-light me-2"
+        onClick={() => setDarkMode(prev => !prev)}
+      >
+        {darkMode ? "☀ Light" : "🌙 Dark"}
+      </button>
 
-        <span className="text-white me-3">
-          👤 {user?.email}
-        </span>
-
-        <button
-          className="btn btn-light me-2"
-          onClick={() => setDarkMode(!darkMode)}
-        >
-          {darkMode ? "☀ Light" : "🌙 Dark"}
-        </button>
-
-        <button
-          className="btn btn-danger"
-          onClick={logout}
-        >
-          Logout
-        </button>
-      </div>
-
+      <button className="btn btn-danger" onClick={logout}>
+        Logout
+      </button>
     </nav>
   );
 }

@@ -1,73 +1,37 @@
-/* Existing SaaS styling */
-.auth-page {
-  background: linear-gradient(135deg, #4a90e2, #50e3c2);
+/* ================= DARK MODE ================= */
+
+.dark {
+  background-color: #0f172a !important;
+  color: white !important;
 }
 
-.auth-card {
-  background: white;
-  border-radius: 15px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* cards */
+.dark .card {
+  background-color: #1e293b !important;
+  color: white !important;
+  border: 1px solid #334155;
 }
 
-.auth-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+/* navbar fix */
+.dark nav {
+  background: #020617 !important;
 }
 
-.btn-primary {
-  background-color: #4a90e2;
-  border: none;
+/* inputs */
+.dark input,
+.dark select {
+  background: #0b1220 !important;
+  color: white !important;
+  border: 1px solid #334155;
 }
 
-.btn-primary:hover {
-  background-color: #357abd;
+/* muted text */
+.dark .text-muted {
+  color: #94a3b8 !important;
 }
 
-.btn-success {
-  background-color: #50e3c2;
-  border: none;
-  color: #fff;
-}
-
-.btn-success:hover {
-  background-color: #38c39c;
-}
-
-/* Dark mode */
-.dark-mode-bg {
-  background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
-}
-
-.dark-card {
-  background: #2b2b2b;
-  color: #fff;
-}
-
-.dark-input {
-  background: #3a3a3a;
-  color: #fff;
-  border: 1px solid #555;
-}
-
-.dark-input::placeholder {
-  color: #ccc;
-}
-.card {
-  transition: 0.3s;
-  border-radius: 10px;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-.card {
-  border-radius: 12px;
-}
-
-h6 {
-  font-weight: 600;
+/* buttons */
+.dark .btn-light {
+  background: #334155 !important;
+  color: white !important;
 }

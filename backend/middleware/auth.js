@@ -1,19 +1,23 @@
 const jwt = require("jsonwebtoken");
 
-const SECRET = "mysecretkey";
-
 module.exports = function (req, res, next) {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  if (!authHeader) {
     return res.status(401).json({ message: "No token" });
   }
 
   try {
-    const decoded = jwt.verify(token, SECRET);
-    req.user = { id: decoded.id };   // ✅ Ensure id is available
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = { id: decoded.id };
+
     next();
+
   } catch (err) {
+    console.log("TOKEN ERROR:", err.message);
     res.status(401).json({ message: "Invalid token" });
   }
 };
