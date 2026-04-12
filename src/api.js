@@ -1,2 +1,2 @@
-const API = "http://localhost:5000";
+const API = "https://smart-task-management-backen-app.onrender.com";
 export default API;
