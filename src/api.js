@@ -1,2 +1,2 @@
-const API = "https://smart-task-management-backen-app.onrender.com";
+const API = process.env.REACT_APP_API_URL;
 export default API;
