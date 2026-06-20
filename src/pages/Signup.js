@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import API from "../api";
 
 function Signup() {
@@ -11,17 +10,19 @@ function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post(`${API}/api/auth/signup`, {
+      await API.post("/auth/signup", {
         username,
         email,
-        password
+        password,
       });
 
       alert("Signup Successful!");
       navigate("/login");
     } catch (err) {
-      alert("Signup Failed!");
+      console.log("SIGNUP ERROR:", err);
+      alert(err.response?.data?.message || "Signup Failed");
     }
   };
 
@@ -31,28 +32,41 @@ function Signup() {
         <h2 className="mb-3 text-center">Signup</h2>
 
         <form onSubmit={handleSignup}>
-          <input className="form-control mb-3"
+          <input
+            className="form-control mb-3"
             placeholder="Username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)} required />
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
-          <input type="email" className="form-control mb-3"
+          <input
+            type="email"
+            className="form-control mb-3"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} required />
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <input type="password" className="form-control mb-3"
+          <input
+            type="password"
+            className="form-control mb-3"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} required />
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
           <button className="btn btn-success w-100">Signup</button>
         </form>
 
         <p className="mt-3 text-center">
           Already have account?{" "}
-          <span style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => navigate("/login")}>
+          <span
+            style={{ cursor: "pointer", color: "blue" }}
+            onClick={() => navigate("/login")}
+          >
             Login
           </span>
         </p>

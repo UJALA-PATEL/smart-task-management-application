@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import API from "../api";
 
 import Sidebar from "../components/Sidebar";
@@ -16,23 +15,20 @@ import TeamPage from "../components/TeamPage";
 import SettingsPage from "../components/SettingsPage";
 
 function Dashboard({ darkMode, setDarkMode }) {
-
   const [tasks, setTasks] = useState([]);
   const [page, setPage] = useState("dashboard");
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
-
+  // 🔥 GET TASKS
   const fetchTasks = async () => {
     try {
-      const res = await axios.get(`${API}/api/tasks`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setTasks(res.data);
+      setLoading(true);
+      const res = await API.get("/tasks");
+      setTasks(res.data || []);
     } catch (err) {
-      console.error(err);
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -42,25 +38,32 @@ function Dashboard({ darkMode, setDarkMode }) {
     fetchTasks();
   }, []);
 
+  // 🔥 ADD TASK (FIXED)
   const addTask = async (task) => {
-    const res = await axios.post(`${API}/api/tasks`, task, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setTasks([...tasks, res.data]);
+    try {
+      await API.post("/tasks", task);
+      await fetchTasks(); // IMPORTANT FIX
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const deleteTask = async (id) => {
-    await axios.delete(`${API}/api/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setTasks(tasks.filter(t => t._id !== id));
+    try {
+      await API.delete(`/tasks/${id}`);
+      setTasks(prev => prev.filter(t => t._id !== id));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const updateTask = async (id, data) => {
-    const res = await axios.put(`${API}/api/tasks/${id}`, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setTasks(tasks.map(t => t._id === id ? res.data : t));
+    try {
+      const res = await API.put(`/tasks/${id}`, data);
+      setTasks(prev => prev.map(t => t._id === id ? res.data : t));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const filteredTasks = tasks
@@ -75,19 +78,24 @@ function Dashboard({ darkMode, setDarkMode }) {
     );
 
   return (
-    <div style={{ display: "flex" }}>
-
+    <div style={{
+      background: darkMode ? "#111827" : "#F5F7FB",
+      color: darkMode ? "#fff" : "#111827",
+      minHeight: "100vh"
+    }}>
+      
       <Sidebar setPage={setPage} />
 
-      <div style={{ marginLeft: "240px", width: "100%" }}>
+      <div style={{ marginLeft: "260px" }}>
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
-        <div className="container mt-4">
+        <div style={{ padding: "25px" }}>
 
           {page === "dashboard" && (
             <>
+              <h2>Dashboard</h2>
               <TaskChart tasks={tasks} />
-              <VoiceCommand addTask={addTask} />
+              <VoiceCommand addTask={addTask} darkMode={darkMode} />
             </>
           )}
 
@@ -103,7 +111,7 @@ function Dashboard({ darkMode, setDarkMode }) {
               />
 
               {loading ? (
-                <h5>Loading...</h5>
+                <h4>Loading...</h4>
               ) : (
                 <TaskList
                   tasks={filteredTasks}

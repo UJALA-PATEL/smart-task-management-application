@@ -1,89 +1,120 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-function VoiceCommand({ addTask }) {
+function VoiceCommand({ addTask, darkMode }) {
   const recognitionRef = useRef(null);
-  const isRecognizingRef = useRef(false);
+  const [listening, setListening] = useState(false);
+  const [supported, setSupported] = useState(true);
 
   useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
     if (!SpeechRecognition) {
-      console.warn("Browser does not support Speech Recognition");
+      setSupported(false);
       return;
     }
 
     const recognition = new SpeechRecognition();
+
     recognition.continuous = false;
+    recognition.interimResults = false;
     recognition.lang = "en-US";
 
     recognition.onstart = () => {
-      isRecognizingRef.current = true;
-      console.log("🎙 Voice recognition started");
+      setListening(true);
+      console.log("🎤 Voice started");
     };
 
     recognition.onend = () => {
-      isRecognizingRef.current = false;
-      console.log("🛑 Voice recognition stopped");
-    };
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.toLowerCase();
-      console.log("Voice Input:", transcript);
-
-      if (transcript.startsWith("add task")) {
-        try {
-          const task = parseVoiceTask(transcript);
-          if (task.title) {
-            addTask(task);
-            alert(`Task added via voice: ${task.title}`);
-          }
-        } catch (err) {
-          console.error("Error parsing voice task:", err);
-        }
-      }
+      setListening(false);
+      console.log("🛑 Voice stopped");
     };
 
     recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
+      setListening(false);
+
+      console.error("Speech Error:", event);
+
+      if (event.error === "not-allowed") {
+        alert("❌ Microphone permission denied.");
+      } else {
+        alert(`❌ Speech Error: ${event.error}`);
+      }
+    };
+
+    recognition.onresult = async (event) => {
+      try {
+        const transcript =
+          event.results[0][0].transcript.trim();
+
+        console.log("VOICE RECEIVED:", transcript);
+
+        if (!transcript) {
+          alert("No voice detected");
+          return;
+        }
+
+        await addTask({
+          title: transcript,
+          description: "Created via Voice",
+          dueDate: "",
+          assignedEmail: "",
+          priority: "Low",
+        });
+
+        alert(`✅ Task Added: ${transcript}`);
+      } catch (err) {
+        console.error(err);
+        alert("❌ Failed to save task");
+      }
     };
 
     recognitionRef.current = recognition;
   }, [addTask]);
 
-  const startRecognition = () => {
-    if (!recognitionRef.current) return;
-    if (isRecognizingRef.current) {
-      recognitionRef.current.stop(); // stop current before starting again
+  const startListening = () => {
+    if (!recognitionRef.current) {
+      alert(
+        "Speech Recognition not supported. Use Google Chrome."
+      );
       return;
     }
-    recognitionRef.current.start();
-  };
 
-  const parseVoiceTask = (text) => {
-    const task = { title: "", description: "", priority: "Low", dueDate: "" };
-
-    const titleMatch = text.match(/title (.*?) (description|priority|due|$)/);
-    if (titleMatch) task.title = titleMatch[1].trim();
-
-    const descMatch = text.match(/description (.*?) (priority|due|$)/);
-    if (descMatch) task.description = descMatch[1].trim();
-
-    const prioMatch = text.match(/priority (low|medium|high)/);
-    if (prioMatch) task.priority = prioMatch[1].charAt(0).toUpperCase() + prioMatch[1].slice(1);
-
-    const dueMatch = text.match(/due (\d{4}-\d{2}-\d{2})/);
-    if (dueMatch) task.dueDate = dueMatch[1];
-
-    return task;
+    try {
+      recognitionRef.current.start();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className="mb-3">
-      <button onClick={startRecognition} className="btn btn-warning w-100">
-        🎤 Add Task via Voice
+
+      <button
+        onClick={startListening}
+        className="btn btn-warning w-100"
+      >
+        {listening
+          ? "🎙 Listening..."
+          : "🎤 Add Task via Voice"}
       </button>
-      <small className="text-muted d-block mt-1">
-        Example: "add task title Buy Milk description 2 liters priority high due 2026-03-20"
+
+      <small
+        className="d-block mt-2"
+        style={{
+          color: darkMode ? "#ffffff" : "#000000",
+          fontWeight: "500",
+        }}
+      >
+        Speak task title after clicking button
       </small>
+
+      {!supported && (
+        <div className="mt-2 text-danger">
+          Browser does not support Speech Recognition.
+          Open in Google Chrome.
+        </div>
+      )}
     </div>
   );
 }

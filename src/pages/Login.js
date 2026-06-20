@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
 
@@ -12,9 +11,9 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${API}/api/auth/login`, {
-        email: email,
-        password: password
+      const res = await API.post("/auth/login", {
+        email,
+        password,
       });
 
       console.log("LOGIN RESPONSE:", res.data);
@@ -28,9 +27,8 @@ function Login() {
       } else {
         alert("Login failed: No token received");
       }
-
     } catch (err) {
-      console.log("ERROR:", err.response?.data || err.message);
+      console.log("LOGIN ERROR:", err);
       alert(err.response?.data?.message || "Login Failed");
     }
   };
@@ -38,11 +36,9 @@ function Login() {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="p-4 bg-white shadow rounded" style={{ width: "300px" }}>
-        
         <h3 className="text-center mb-3">Login</h3>
 
         <form onSubmit={handleLogin}>
-          
           <input
             className="form-control mb-2"
             type="email"
@@ -61,10 +57,7 @@ function Login() {
             required
           />
 
-          <button className="btn btn-primary w-100">
-            Login
-          </button>
-
+          <button className="btn btn-primary w-100">Login</button>
         </form>
 
         <p className="text-center mt-2">
@@ -76,7 +69,6 @@ function Login() {
             Signup
           </span>
         </p>
-
       </div>
     </div>
   );

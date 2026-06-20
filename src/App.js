@@ -7,17 +7,19 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("darkMode") === "true";
-  });
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
 
   useEffect(() => {
     localStorage.setItem("darkMode", darkMode);
 
     if (darkMode) {
-      document.documentElement.classList.add("dark");
+      document.body.style.background = "#111827";
+      document.body.style.color = "#ffffff";
     } else {
-      document.documentElement.classList.remove("dark");
+      document.body.style.background = "#F5F7FB";
+      document.body.style.color = "#111827";
     }
   }, [darkMode]);
 
