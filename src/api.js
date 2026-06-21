@@ -5,7 +5,7 @@ import axios from "axios";
 // const BASE_URL = "http://localhost:5000/api";
 
 // DEPLOYMENT (Render/Vercel ke baad isko change karna hoga)
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://smart-task-management-application-8.onrender.com";
 
 const API = axios.create({
   baseURL: BASE_URL,
