@@ -6,23 +6,35 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      await API.post("/auth/signup", {
+      const res = await API.post("/auth/signup", {
         username,
         email,
         password,
       });
 
+      console.log("SIGNUP RESPONSE:", res.data);
+
       alert("Signup Successful!");
       navigate("/login");
+
     } catch (err) {
       console.log("SIGNUP ERROR:", err);
-      alert(err.response?.data?.message || "Signup Failed");
+
+      alert(
+        err.response?.data?.message ||
+        "Signup Failed (Check backend connection)"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,7 +70,12 @@ function Signup() {
             required
           />
 
-          <button className="btn btn-success w-100">Signup</button>
+          <button
+            className="btn btn-success w-100"
+            disabled={loading}
+          >
+            {loading ? "Creating Account..." : "Signup"}
+          </button>
         </form>
 
         <p className="mt-3 text-center">

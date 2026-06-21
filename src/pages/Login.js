@@ -5,10 +5,13 @@ import API from "../api";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await API.post("/auth/login", {
@@ -18,18 +21,28 @@ function Login() {
 
       console.log("LOGIN RESPONSE:", res.data);
 
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+      const { token, user } = res.data;
 
-        alert("Login Successful!");
-        navigate("/dashboard");
-      } else {
-        alert("Login failed: No token received");
+      if (!token) {
+        alert("Login failed: Token missing");
+        return;
       }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("Login Successful!");
+      navigate("/dashboard");
+
     } catch (err) {
       console.log("LOGIN ERROR:", err);
-      alert(err.response?.data?.message || "Login Failed");
+
+      alert(
+        err.response?.data?.message ||
+        "Login Failed (Check backend URL / server)"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,7 +70,12 @@ function Login() {
             required
           />
 
-          <button className="btn btn-primary w-100">Login</button>
+          <button
+            className="btn btn-primary w-100"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
 
         <p className="text-center mt-2">
