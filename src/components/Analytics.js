@@ -65,7 +65,7 @@ function Analytics({ tasks }) {
       <h4 className="mb-3">📊 Analytics Dashboard</h4>
 
       {/* 🔥 FILTER BUTTONS */}
-      <div className="mb-3">
+      <div className="mb-3 d-flex flex-wrap gap-2">
         <button className="btn btn-sm btn-outline-primary me-2" onClick={() => setFilter("all")}>
           All
         </button>
@@ -112,7 +112,11 @@ function Analytics({ tasks }) {
 
       {/* 🔥 SMALL GRAPH */}
       <div className="card p-3">
-        <div style={{ height: "200px" }}>
+        <div
+        style={{
+          height: window.innerWidth <= 768 ? "250px" : "200px"
+          }}
+          >
           <Bar data={data} options={options} />
         </div>
       </div>

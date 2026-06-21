@@ -21,11 +21,26 @@ function Dashboard({ darkMode, setDarkMode }) {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 🔥 GET TASKS
+  // RESPONSIVE FIX
+  const [mobile, setMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () =>
+      window.removeEventListener("resize", handleResize);
+  }, []);
+
   const fetchTasks = async () => {
     try {
       setLoading(true);
+
       const res = await API.get("/tasks");
+
       setTasks(res.data || []);
     } catch (err) {
       console.log(err);
@@ -38,11 +53,10 @@ function Dashboard({ darkMode, setDarkMode }) {
     fetchTasks();
   }, []);
 
-  // 🔥 ADD TASK (FIXED)
   const addTask = async (task) => {
     try {
       await API.post("/tasks", task);
-      await fetchTasks(); // IMPORTANT FIX
+      await fetchTasks();
     } catch (err) {
       console.log(err);
     }
@@ -51,7 +65,10 @@ function Dashboard({ darkMode, setDarkMode }) {
   const deleteTask = async (id) => {
     try {
       await API.delete(`/tasks/${id}`);
-      setTasks(prev => prev.filter(t => t._id !== id));
+
+      setTasks((prev) =>
+        prev.filter((t) => t._id !== id)
+      );
     } catch (err) {
       console.log(err);
     }
@@ -60,42 +77,75 @@ function Dashboard({ darkMode, setDarkMode }) {
   const updateTask = async (id, data) => {
     try {
       const res = await API.put(`/tasks/${id}`, data);
-      setTasks(prev => prev.map(t => t._id === id ? res.data : t));
+
+      setTasks((prev) =>
+        prev.map((t) =>
+          t._id === id ? res.data : t
+        )
+      );
     } catch (err) {
       console.log(err);
     }
   };
 
   const filteredTasks = tasks
-    .filter(task => {
+    .filter((task) => {
       if (filter === "todo") return task.status === "Todo";
-      if (filter === "progress") return task.status === "In Progress";
+      if (filter === "progress")
+        return task.status === "In Progress";
       if (filter === "done") return task.status === "Done";
+
       return true;
     })
-    .filter(task =>
-      task.title.toLowerCase().includes(search.toLowerCase())
+    .filter((task) =>
+      task.title
+        .toLowerCase()
+        .includes(search.toLowerCase())
     );
 
   return (
-    <div style={{
-      background: darkMode ? "#111827" : "#F5F7FB",
-      color: darkMode ? "#fff" : "#111827",
-      minHeight: "100vh"
-    }}>
-      
+    <div
+      style={{
+        background: darkMode ? "#111827" : "#F5F7FB",
+        color: darkMode ? "#fff" : "#111827",
+        minHeight: "100vh",
+        overflowX: "hidden",
+      }}
+    >
       <Sidebar setPage={setPage} />
 
-      <div style={{ marginLeft: "260px" }}>
-        <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+      <div
+        style={{
+          marginLeft: mobile ? "0" : "260px",
+          width: mobile
+            ? "100%"
+            : "calc(100% - 260px)",
+          transition: "0.3s ease",
+          overflowX: "hidden",
+        }}
+      >
+        <Navbar
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
 
-        <div style={{ padding: "25px" }}>
-
+        <div
+          style={{
+            padding: mobile ? "15px" : "25px",
+            marginTop: mobile ? "70px" : "0",
+            maxWidth: "100%",
+          }}
+        >
           {page === "dashboard" && (
             <>
-              <h2>Dashboard</h2>
+              <h2 className="mb-3">Dashboard</h2>
+
               <TaskChart tasks={tasks} />
-              <VoiceCommand addTask={addTask} darkMode={darkMode} />
+
+              <VoiceCommand
+                addTask={addTask}
+                darkMode={darkMode}
+              />
             </>
           )}
 
@@ -122,13 +172,24 @@ function Dashboard({ darkMode, setDarkMode }) {
             </>
           )}
 
-          {page === "analytics" && <Analytics tasks={tasks} />}
-          {page === "calendar" && <CalendarPage tasks={tasks} />}
-          {page === "team" && <TeamPage tasks={tasks} />}
-          {page === "settings" && (
-            <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
+          {page === "analytics" && (
+            <Analytics tasks={tasks} />
           )}
 
+          {page === "calendar" && (
+            <CalendarPage tasks={tasks} />
+          )}
+
+          {page === "team" && (
+            <TeamPage tasks={tasks} />
+          )}
+
+          {page === "settings" && (
+            <SettingsPage
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -40,7 +40,14 @@ function Signup() {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="p-5 bg-white rounded shadow" style={{ minWidth: "350px" }}>
+     <div
+  className="p-4 p-md-5 bg-white rounded shadow"
+  style={{
+    width: "100%",
+    maxWidth: "420px",
+    margin: "15px"
+  }}
+>
         <h2 className="mb-3 text-center">Signup</h2>
 
         <form onSubmit={handleSignup}>

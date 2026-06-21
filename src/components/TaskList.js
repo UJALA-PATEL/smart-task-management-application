@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 
 function TaskList({ tasks, deleteTask, updateTask }) {
-
   const user = JSON.parse(localStorage.getItem("user"));
 
   const getStatusColor = (status) => {
@@ -12,7 +11,6 @@ function TaskList({ tasks, deleteTask, updateTask }) {
     return "#545252";
   };
 
-  // 🔥 PRIORITY COLOR
   const getPriorityColor = (priority) => {
     if (priority === "High") return "danger";
     if (priority === "Medium") return "warning";
@@ -21,7 +19,9 @@ function TaskList({ tasks, deleteTask, updateTask }) {
 
   return (
     <div className="mt-4">
-      <h3 className="mb-3">📝 Your Tasks</h3>
+      <h3 className="mb-3 text-center text-md-start">
+        📝 Your Tasks
+      </h3>
 
       {tasks.length === 0 ? (
         <div className="text-center mt-5">
@@ -30,62 +30,100 @@ function TaskList({ tasks, deleteTask, updateTask }) {
       ) : (
         <div className="row">
           {tasks.map((task) => {
-
             const isCreator = task.createdBy?._id === user._id;
             const isAssignee = task.assignedTo?._id === user._id;
 
             return (
-              <div className="col-md-6 col-lg-4" key={task._id}>
-                
+              <div
+                className="col-12 col-sm-12 col-md-6 col-lg-4"
+                key={task._id}
+              >
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="card p-3 mb-4 shadow"
+                  whileHover={{
+                    scale: window.innerWidth > 768 ? 1.03 : 1,
+                  }}
+                  className="card p-3 mb-4 shadow h-100"
                   style={{
                     borderLeft: `6px solid ${getStatusColor(task.status)}`,
-                    boxShadow: "0 6px 25px rgba(0,0,0,0.25)",
-                    transition: "0.3s"
+                    boxShadow: "0 6px 25px rgba(0,0,0,0.15)",
+                    transition: "0.3s",
+                    borderRadius: "15px",
+                    overflow: "hidden",
                   }}
                 >
-
                   {/* TITLE */}
-                  <h5 className="fw-bold mb-2">
+                  <h5
+                    className="fw-bold mb-2"
+                    style={{
+                      wordBreak: "break-word",
+                    }}
+                  >
                     {task.title}
                   </h5>
 
-                  {/* 🔥 PRIORITY BADGE */}
-                  <span className={`badge bg-${getPriorityColor(task.priority)} mb-2`}>
+                  {/* PRIORITY */}
+                  <span
+                    className={`badge bg-${getPriorityColor(
+                      task.priority
+                    )} mb-2`}
+                    style={{
+                      width: "fit-content",
+                    }}
+                  >
                     🔥 {task.priority || "Low"} Priority
                   </span>
 
                   {/* DESCRIPTION */}
-                  <p style={{ fontSize: "14px", opacity: 0.8 }}>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      opacity: 0.8,
+                      wordBreak: "break-word",
+                    }}
+                  >
                     {task.description || "No description"}
                   </p>
 
-                  {/* ROLE TAG */}
+                  {/* ROLE */}
                   {isCreator && (
-                    <span className="badge bg-success mb-2">
+                    <span
+                      className="badge bg-success mb-2"
+                      style={{ width: "fit-content" }}
+                    >
                       🟢 Created by you
                     </span>
                   )}
 
                   {isAssignee && !isCreator && (
-                    <span className="badge bg-primary mb-2">
+                    <span
+                      className="badge bg-primary mb-2"
+                      style={{ width: "fit-content" }}
+                    >
                       🔵 Assigned to you
                     </span>
                   )}
 
                   {/* ASSIGN INFO */}
                   {isCreator && task.assignedTo && (
-                    <p style={{ fontSize: "13px" }}>
+                    <p
+                      style={{
+                        fontSize: "13px",
+                        wordBreak: "break-word",
+                      }}
+                    >
                       👤 Assigned to: {task.assignedTo.email}
                     </p>
                   )}
 
                   {isAssignee && task.createdBy && (
-                    <p style={{ fontSize: "13px" }}>
+                    <p
+                      style={{
+                        fontSize: "13px",
+                        wordBreak: "break-word",
+                      }}
+                    >
                       👤 Assigned by: {task.createdBy.email}
                     </p>
                   )}
@@ -94,12 +132,12 @@ function TaskList({ tasks, deleteTask, updateTask }) {
                   <div className="mb-2">
                     <span
                       style={{
-                        padding: "5px 10px",
+                        padding: "6px 12px",
                         borderRadius: "10px",
                         background: getStatusColor(task.status),
                         color: "black",
                         fontSize: "12px",
-                        fontWeight: "600"
+                        fontWeight: "600",
                       }}
                     >
                       {task.status}
@@ -109,20 +147,21 @@ function TaskList({ tasks, deleteTask, updateTask }) {
                   {/* DUE DATE */}
                   {task.dueDate && (
                     <p style={{ fontSize: "13px" }}>
-                      📅 {new Date(task.dueDate).toLocaleDateString()}
+                      📅{" "}
+                      {new Date(task.dueDate).toLocaleDateString()}
                     </p>
                   )}
 
                   {/* ACTIONS */}
-                  <div className="mt-2">
-
-                    {/* ASSIGNEE → STATUS CHANGE */}
+                  <div className="mt-auto">
                     {isAssignee && (
                       <select
                         className="form-control mb-2"
                         value={task.status}
                         onChange={(e) =>
-                          updateTask(task._id, { status: e.target.value })
+                          updateTask(task._id, {
+                            status: e.target.value,
+                          })
                         }
                       >
                         <option>Todo</option>
@@ -131,15 +170,19 @@ function TaskList({ tasks, deleteTask, updateTask }) {
                       </select>
                     )}
 
-                    {/* CREATOR → EDIT + DELETE */}
                     {isCreator && (
-                      <>
+                      <div className="d-flex flex-column flex-sm-row gap-2">
                         <button
-                          className="btn btn-warning btn-sm me-2"
+                          className="btn btn-warning btn-sm flex-fill"
                           onClick={() => {
-                            const newDate = prompt("Enter new due date (YYYY-MM-DD)");
+                            const newDate = prompt(
+                              "Enter new due date (YYYY-MM-DD)"
+                            );
+
                             if (newDate) {
-                              updateTask(task._id, { dueDate: newDate });
+                              updateTask(task._id, {
+                                dueDate: newDate,
+                              });
                             }
                           }}
                         >
@@ -147,18 +190,15 @@ function TaskList({ tasks, deleteTask, updateTask }) {
                         </button>
 
                         <button
-                          className="btn btn-danger btn-sm"
+                          className="btn btn-danger btn-sm flex-fill"
                           onClick={() => deleteTask(task._id)}
                         >
                           🗑 Delete
                         </button>
-                      </>
+                      </div>
                     )}
-
                   </div>
-
                 </motion.div>
-
               </div>
             );
           })}

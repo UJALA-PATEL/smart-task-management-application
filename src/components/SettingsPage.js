@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 function SettingsPage() {
-
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true"
   );
 
-  // 🔥 GLOBAL SYNC FIX
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add("dark");
@@ -18,20 +16,24 @@ function SettingsPage() {
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
-  const toggleTheme = () => setDarkMode(prev => !prev);
+  const toggleTheme = () => setDarkMode((prev) => !prev);
 
   return (
     <div
       className="container py-4"
       style={{
-        maxWidth: "820px"
+        maxWidth: "820px",
       }}
     >
-
       {/* HEADER */}
       <div className="mb-4">
         <h2 className="fw-bold">Settings</h2>
-        <p className="text-muted" style={{ fontSize: "13px" }}>
+        <p
+          className="text-muted"
+          style={{
+            fontSize: "13px",
+          }}
+        >
           Manage your account preferences and appearance
         </p>
       </div>
@@ -41,10 +43,9 @@ function SettingsPage() {
         className="card border-0 shadow-sm"
         style={{
           borderRadius: "14px",
-          overflow: "hidden"
+          overflow: "hidden",
         }}
       >
-
         {/* TOP PROFILE STRIP */}
         <div
           style={{
@@ -53,12 +54,18 @@ function SettingsPage() {
             color: "white",
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "12px",
           }}
         >
-
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
             <div
               style={{
                 width: "46px",
@@ -69,19 +76,33 @@ function SettingsPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontWeight: "700"
+                fontWeight: "700",
+                flexShrink: 0,
               }}
             >
-              {user?.username?.charAt(0).toUpperCase()}
+              {user?.username?.charAt(0)?.toUpperCase()}
             </div>
 
-            <div>
-              <div style={{ fontWeight: "600" }}>{user?.username}</div>
-              <div style={{ fontSize: "12px", opacity: 0.7 }}>
+            <div
+              style={{
+                minWidth: 0,
+                wordBreak: "break-word",
+              }}
+            >
+              <div style={{ fontWeight: "600" }}>
+                {user?.username}
+              </div>
+
+              <div
+                style={{
+                  fontSize: "12px",
+                  opacity: 0.7,
+                  wordBreak: "break-word",
+                }}
+              >
                 {user?.email}
               </div>
             </div>
-
           </div>
 
           <span
@@ -89,23 +110,32 @@ function SettingsPage() {
               fontSize: "12px",
               padding: "6px 10px",
               borderRadius: "20px",
-              background: "rgba(255,255,255,0.12)"
+              background: "rgba(255,255,255,0.12)",
             }}
           >
             ACTIVE
           </span>
-
         </div>
 
         {/* BODY */}
         <div style={{ padding: "22px" }}>
-
-          {/* SECTION TITLE */}
+          {/* APPEARANCE */}
           <div style={{ marginBottom: "18px" }}>
-            <div style={{ fontWeight: "600", fontSize: "14px" }}>
+            <div
+              style={{
+                fontWeight: "600",
+                fontSize: "14px",
+              }}
+            >
               Appearance
             </div>
-            <div style={{ fontSize: "12px", color: "#6b7280" }}>
+
+            <div
+              style={{
+                fontSize: "12px",
+                color: "#6b7280",
+              }}
+            >
               Customize how the app looks
             </div>
           </div>
@@ -116,14 +146,23 @@ function SettingsPage() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              flexWrap: "wrap",
+              gap: "10px",
               padding: "14px 0",
-              borderBottom: "1px solid #eee"
+              borderBottom: "1px solid #eee",
             }}
           >
-
             <div>
-              <div style={{ fontWeight: "500" }}>Theme Mode</div>
-              <div style={{ fontSize: "12px", color: "#6b7280" }}>
+              <div style={{ fontWeight: "500" }}>
+                Theme Mode
+              </div>
+
+              <div
+                style={{
+                  fontSize: "12px",
+                  color: "#6b7280",
+                }}
+              >
                 Switch between light and dark interface
               </div>
             </div>
@@ -139,23 +178,25 @@ function SettingsPage() {
                 cursor: "pointer",
                 fontSize: "13px",
                 fontWeight: "500",
-                transition: "0.2s"
               }}
             >
               {darkMode ? "🌙 Dark" : "☀ Light"}
             </button>
-
           </div>
 
-          {/* ACCOUNT SECTION */}
+          {/* ACCOUNT INFO */}
           <div style={{ marginTop: "18px" }}>
-
-            <div style={{ fontWeight: "600", fontSize: "14px", marginBottom: "10px" }}>
+            <div
+              style={{
+                fontWeight: "600",
+                fontSize: "14px",
+                marginBottom: "10px",
+              }}
+            >
               Account Information
             </div>
 
             <div style={{ fontSize: "13px" }}>
-
               <div style={rowStyle}>
                 <span style={labelStyle}>Username</span>
                 <span style={valueStyle}>{user?.username}</span>
@@ -168,37 +209,42 @@ function SettingsPage() {
 
               <div style={rowStyle}>
                 <span style={labelStyle}>User ID</span>
-                <span style={{ ...valueStyle, fontSize: "11px" }}>
+
+                <span
+                  style={{
+                    ...valueStyle,
+                    fontSize: "11px",
+                  }}
+                >
                   {user?._id}
                 </span>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
-// 🔥 SMALL CLEAN STYLES
 const rowStyle = {
   display: "flex",
   justifyContent: "space-between",
-  padding: "8px 0",
-  borderBottom: "1px solid #f3f4f6"
+  alignItems: "flex-start",
+  flexWrap: "wrap",
+  gap: "6px",
+  padding: "10px 0",
+  borderBottom: "1px solid #f3f4f6",
 };
 
 const labelStyle = {
-  color: "#6b7280"
+  color: "#6b7280",
 };
 
 const valueStyle = {
-  fontWeight: "500"
+  fontWeight: "500",
+  wordBreak: "break-word",
+  textAlign: "right",
 };
 
 export default SettingsPage;

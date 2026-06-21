@@ -1,7 +1,6 @@
 import React from "react";
 
 function TaskCard({ task, deleteTask, toggleComplete }) {
-
   const getPriorityColor = () => {
     if (task.priority === "High") return "danger";
     if (task.priority === "Medium") return "warning";
@@ -9,7 +8,6 @@ function TaskCard({ task, deleteTask, toggleComplete }) {
   };
 
   const checkDeadline = () => {
-
     if (!task.dueDate) return null;
 
     const today = new Date();
@@ -33,34 +31,53 @@ function TaskCard({ task, deleteTask, toggleComplete }) {
   };
 
   return (
-    <div className="card p-3 mb-2">
-
+    <div className="card p-3 mb-3">
       <h5
         style={{
-          textDecoration: task.completed ? "line-through" : "none"
+          textDecoration: task.completed ? "line-through" : "none",
+          wordBreak: "break-word",
         }}
       >
         {task.title}
       </h5>
 
-      <span className={`badge bg-${getPriorityColor()} mb-2`}>
+      <span
+        className={`badge bg-${getPriorityColor()} mb-2`}
+        style={{
+          width: "fit-content",
+        }}
+      >
         {task.priority}
       </span>
 
       {task.dueDate && (
-        <p>Due: {task.dueDate}</p>
+        <p
+          style={{
+            marginBottom: "8px",
+            wordBreak: "break-word",
+          }}
+        >
+          Due: {task.dueDate}
+        </p>
       )}
 
       {checkDeadline() && (
-        <p style={{ color: "red", fontWeight: "bold" }}>
+        <p
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            marginBottom: "10px",
+          }}
+        >
           {checkDeadline()}
         </p>
       )}
 
-      <div>
-
+      <div
+        className="d-flex flex-wrap gap-2"
+      >
         <button
-          className="btn btn-success me-2"
+          className="btn btn-success"
           onClick={() => toggleComplete(task.id)}
         >
           Complete
@@ -72,9 +89,7 @@ function TaskCard({ task, deleteTask, toggleComplete }) {
         >
           Delete
         </button>
-
       </div>
-
     </div>
   );
 }

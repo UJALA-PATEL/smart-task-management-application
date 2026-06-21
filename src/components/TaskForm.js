@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function TaskForm({ addTask }) {
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -16,7 +15,7 @@ function TaskForm({ addTask }) {
       description,
       dueDate,
       assignedEmail,
-      priority
+      priority,
     });
 
     setTitle("");
@@ -29,62 +28,85 @@ function TaskForm({ addTask }) {
   };
 
   return (
-    <div className="card p-3 mb-4">
-      <h4>Add Task</h4>
+    <div
+      className="card shadow-sm border-0 mb-4"
+      style={{
+        borderRadius: "16px",
+      }}
+    >
+      <div className="card-body">
+        <h4 className="mb-3 fw-bold">
+          ➕ Add Task
+        </h4>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              className="form-control"
+              placeholder="Task Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          className="form-control mb-2"
-          placeholder="Task Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+          <div className="mb-3">
+            <textarea
+              className="form-control"
+              rows="3"
+              placeholder="Task Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-        <input
-          className="form-control mb-2"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+          <div className="row g-3 mb-3">
+            <div className="col-12 col-md-6">
+              <input
+                type="date"
+                className="form-control"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+            </div>
 
-        <input
-          type="date"
-          className="form-control mb-2"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-        />
+            <div className="col-12 col-md-6">
+              <select
+                className="form-control"
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+              >
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </div>
+          </div>
 
-        <input
-          className="form-control mb-2"
-          placeholder="Assign to (email)"
-          value={assignedEmail}
-          onChange={(e) => setAssignedEmail(e.target.value)}
-        />
+          <div className="mb-3">
+            <input
+              className="form-control"
+              placeholder="Assign to (email)"
+              value={assignedEmail}
+              onChange={(e) => setAssignedEmail(e.target.value)}
+            />
+          </div>
 
-        {/* 🔥 NEW */}
-        <select
-          className="form-control mb-2"
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-        >
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-        </select>
-
-        <button className="btn btn-primary w-100">
-          Add Task
-        </button>
-
-      </form>
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            style={{
+              borderRadius: "10px",
+              padding: "10px",
+              fontWeight: "600",
+            }}
+          >
+            Add Task
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
 
 export default TaskForm;
-
-
-
-

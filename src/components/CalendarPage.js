@@ -46,7 +46,7 @@ function CalendarPage({ tasks }) {
         borderRadius: "8px",
         color: "#fff",
         border: "none",
-        fontSize: "11px",
+        fontSize: window.innerWidth <= 768 ? "9px" : "11px",
         padding: "2px 6px",
       },
     };
@@ -57,7 +57,7 @@ function CalendarPage({ tasks }) {
       style={{
         minHeight: "100vh",
         background: "#f5f7fb",
-        padding: "20px",
+        padding: window.innerWidth <= 768 ? "10px" : "20px",
       }}
     >
 
@@ -83,8 +83,8 @@ function CalendarPage({ tasks }) {
 
         <div
           style={{
-            width: "95%",
-            maxWidth: "850px",
+            width: "100%",
+            maxWidth: "100%",
             background: "rgba(255,255,255,0.9)",
             backdropFilter: "blur(10px)",
             borderRadius: "14px",
@@ -101,7 +101,12 @@ function CalendarPage({ tasks }) {
               </p>
             </div>
           ) : (
-            <div style={{ height: "420px" }}>
+            <div
+  style={{
+    height: window.innerWidth <= 768 ? "500px" : "420px",
+    overflowX: "auto",
+  }}
+>
               <Calendar
                 localizer={localizer}
                 events={events}

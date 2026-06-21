@@ -88,7 +88,13 @@ function VoiceCommand({ addTask, darkMode }) {
   };
 
   return (
-    <div className="mb-3">
+    <div
+  className="mb-3"
+  style={{
+    width: "100%",
+    maxWidth: "100%",
+  }}
+>
 
       <button
         onClick={startListening}
@@ -100,7 +106,7 @@ function VoiceCommand({ addTask, darkMode }) {
       </button>
 
       <small
-        className="d-block mt-2"
+  className="d-block mt-2"
         style={{
           color: darkMode ? "#ffffff" : "#000000",
           fontWeight: "500",

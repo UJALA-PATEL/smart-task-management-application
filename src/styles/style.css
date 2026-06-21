@@ -1,19 +1,137 @@
+/* ===== GLOBAL ===== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== DARK MODE ===== */
+
 body.dark {
   background-color: #121212;
-  color: white;
+  color: #ffffff;
 }
 
 body.dark .card {
   background-color: #1e1e1e;
   color: white;
+  border-color: #333;
 }
 
-body.dark .form-control {
+body.dark .form-control,
+body.dark .form-select,
+body.dark input,
+body.dark textarea,
+body.dark select {
   background-color: #2b2b2b;
   color: white;
   border: 1px solid #444;
 }
 
+body.dark .form-control::placeholder {
+  color: #bdbdbd;
+}
+
+body.dark .btn-outline-primary,
+body.dark .btn-outline-success,
+body.dark .btn-outline-warning {
+  color: white;
+}
+
+body.dark .text-muted {
+  color: #bdbdbd !important;
+}
+
 body.dark .navbar {
-  background-color: black !important;
+  background-color: #121212 !important;
+}
+
+/* ===== CALENDAR FIX ===== */
+
+.rbc-calendar {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.rbc-toolbar {
+  flex-wrap: wrap !important;
+  gap: 10px;
+}
+
+.rbc-toolbar-label {
+  margin: 10px 0;
+}
+
+/* ===== RESPONSIVE FIX ===== */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.card {
+  width: 100%;
+}
+
+button {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 768px) {
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .rbc-calendar {
+    font-size: 12px;
+  }
+
+  .rbc-toolbar {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .rbc-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* ===== SMALL MOBILE ===== */
+
+@media (max-width: 480px) {
+  .rbc-calendar {
+    font-size: 10px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    word-break: break-word;
+  }
 }

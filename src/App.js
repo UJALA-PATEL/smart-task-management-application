@@ -15,12 +15,10 @@ function App() {
     localStorage.setItem("darkMode", darkMode);
 
     if (darkMode) {
-      document.body.style.background = "#111827";
-      document.body.style.color = "#ffffff";
-    } else {
-      document.body.style.background = "#F5F7FB";
-      document.body.style.color = "#111827";
-    }
+  document.body.classList.add("dark");
+} else {
+  document.body.classList.remove("dark");
+}
   }, [darkMode]);
 
   const token = localStorage.getItem("token");
