@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",   // 👈 LOCAL FIRST (testing ke liye)
+  baseURL: "https://smart-task-management-application-10.onrender.com/api",   // 👈 LOCAL FIRST (testing ke liye)
   headers: {
     "Content-Type": "application/json",
   },
