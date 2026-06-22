@@ -1,12 +1,13 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://smart-task-management-application-9.onrender.com",
+  baseURL: "http://localhost:5000/api",   // 👈 LOCAL FIRST (testing ke liye)
   headers: {
     "Content-Type": "application/json",
   },
 });
 
+// token automatically attach
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
 

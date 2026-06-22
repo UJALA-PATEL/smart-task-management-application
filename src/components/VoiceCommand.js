@@ -105,8 +105,8 @@ function VoiceCommand({ addTask, darkMode }) {
           : "🎤 Add Task via Voice"}
       </button>
 
-      <small
-  className="d-block mt-2"
+     <small
+  className="d-block mt-2 text-center text-md-start"
         style={{
           color: darkMode ? "#ffffff" : "#000000",
           fontWeight: "500",
